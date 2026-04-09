@@ -34,16 +34,16 @@ Record these values before setup:
 
 - `BOX_PUBLIC_IP`, the public IPv4 address of the box
 - `BOX_DOMAIN`, the domain the box should manage, for example `example.com`
-- `BOX_DAEMON_HOSTNAME`, usually something like `box.example.com`
-- `BOX_NAMESERVER_1` and `BOX_NAMESERVER_2`, for example `ns1.example.com` and `ns2.example.com`, if the box will be authoritative
-- the glue/host records for those nameservers when they are in-bailiwick
-- the apex routing plan for `@` and `www`
+
+The box can derive these defaults from `BOX_DOMAIN`:
+
+- daemon hostname: `box.<domain>`
+- nameservers: `ns1.<domain>` and `ns2.<domain>`
 
 DNS / registrar requirements:
 
-- if the box will be authoritative, create registrar host records for `ns1.<domain>` and `ns2.<domain>` pointing to the box IP
-- delegate the domain to those nameservers
-- if the box will not be authoritative, keep your external DNS provider and point the required records at the box manually
+- create registrar host/glue records for `ns1.<domain>` and `ns2.<domain>` pointing to the box IP when the box will be authoritative
+- delegate the domain to those nameservers at the registrar
 - for apex hosting, prepare `A` (and optional `AAAA`) records for `@`
 - for the usual web alias, prepare `www` as a CNAME to the apex unless you intentionally want no `www`
 

@@ -49,16 +49,16 @@ Have these values ready before setup:
 
 - `BOX_PUBLIC_IP`, the public IPv4 that will serve the sites and daemon
 - `BOX_DOMAIN`, the main domain you want the box to manage, for example `example.com`
-- `BOX_DAEMON_HOSTNAME`, the hostname for the daemon, for example `box.example.com`
-- `BOX_NAMESERVER_1` and `BOX_NAMESERVER_2`, if you want the box to be authoritative for the domain
-- the registrar-side glue records or host records needed for those nameservers when they live under the same domain, for example `ns1.example.com -> <BOX_PUBLIC_IP>` and `ns2.example.com -> <BOX_PUBLIC_IP>`
-- the apex routing plan, meaning whether `example.com` should point directly at the box and whether `www.example.com` should alias to the apex
+
+The box can derive these conventions from `BOX_DOMAIN`:
+
+- daemon hostname: `box.<domain>`
+- nameservers: `ns1.<domain>` and `ns2.<domain>`
 
 Registrar / DNS requirements:
 
-- if the box will be authoritative, create nameserver host records such as `ns1.<domain>` and `ns2.<domain>` pointing at the box IP
-- update the domain to delegate to those nameservers
-- if you are not using the box as the authoritative DNS server, keep your external DNS provider and point the needed `A`/`AAAA` records at the box instead
+- set registrar host/glue records for `ns1.<domain>` and `ns2.<domain>` to the box IP when the box will be authoritative
+- set the domain nameservers at the registrar to `ns1.<domain>` and `ns2.<domain>`
 - for normal apex hosting, `@ -> <BOX_PUBLIC_IP>` should exist
 - for the default web alias, `www -> @` or `www -> <BOX_DOMAIN>` should exist unless you intentionally want apex-only behavior
 
