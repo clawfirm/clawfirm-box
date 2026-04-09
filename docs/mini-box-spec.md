@@ -33,6 +33,6 @@ Clients may include:
 The first-class deployment target is one Ubuntu VPS running:
 
 - Caddy
-- the Clawfirm box adapter
+- the Clawfirm box daemon
 - release storage
 - optional bind9

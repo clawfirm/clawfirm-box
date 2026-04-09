@@ -6,7 +6,7 @@ It is designed for a box owner and their AI agent to interact with the box direc
 
 ## What this repo contains
 
-- the box adapter HTTP API
+- the box daemon HTTP API
 - static release publish, rollback, and listing logic
 - domain reconcile helpers for Caddy and local site state
 - local DNS helper scripts for bind9-backed box setups
@@ -17,7 +17,7 @@ It is designed for a box owner and their AI agent to interact with the box direc
 
 One machine can run:
 
-- the Clawfirm box adapter
+- the Clawfirm box daemon
 - Caddy
 - local release storage under `/srv/clawfirm-box/sites`
 - local DNS helper commands
@@ -34,6 +34,28 @@ That gives the owner a direct box-native API that `clawfirm-cli` or another agen
 - `docs/` public docs for setup and API shape
 - `test/` handler and runtime tests
 - `spec/` TLA+ models
+
+## Prerequisites before cloning
+
+- Ubuntu 24.04 VPS
+- root access or a sudo-capable user
+- public IPv4 address
+- a domain you control if you want public HTTPS and DNS on the box
+- ports `80` and `443` open, plus `53/tcp` and `53/udp` if this box will run authoritative DNS
+- enough disk for release history under `/srv/clawfirm-box/sites`
+
+Recommended prep:
+
+```bash
+apt update && apt upgrade -y
+apt install -y curl git ca-certificates
+```
+
+If this box will run the full stack locally:
+
+```bash
+apt install -y nodejs npm caddy bind9 bind9-utils
+```
 
 ## Quick start
 
@@ -58,7 +80,7 @@ CLAWFIRM_BOX_PUBLIC_IP=203.0.113.10 \
 CLAWFIRM_BOX_DOMAIN=example.com \
 CLAWFIRM_BOX_ADAPTER_HOSTNAME=box.example.com \
 CLAWFIRM_BOX_ADAPTER_TOKEN=replace-me \
-./scripts/render-adapter-env.sh
+./scripts/render-box-env.sh
 ```
 
 Stage bootstrap assets:
@@ -87,7 +109,7 @@ Important endpoints:
 - `POST /dns/ensure-zone`
 - `POST /dns/apply-records`
 
-See `docs/adapter-api.md` for the current contract.
+See `docs/box-daemon-api.md` for the current contract.
 
 ## Tests
 

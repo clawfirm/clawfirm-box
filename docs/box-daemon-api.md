@@ -1,4 +1,4 @@
-# Clawfirm box adapter API
+# Clawfirm box daemon API
 
 HTTP API for the self-hosted Clawfirm mini-box runtime.
 
@@ -125,4 +125,4 @@ These are internal box endpoints protected by the same shared-secret auth:
 
 ## Deployment note
 
-For the one-box path, run this service on the same machine that owns static hosting and local DNS helper access. A common pattern is to expose it at a hostname like `box.example.com` or `adapter.example.com`.
+For the one-box path, run this service on the same machine that owns static hosting and local DNS helper access. A common pattern is to expose it at a hostname like `box.example.com`.

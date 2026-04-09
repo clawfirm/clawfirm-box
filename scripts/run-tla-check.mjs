@@ -47,7 +47,7 @@ const jarPath = resolveJarPath();
 
 if (!jarPath) {
   const message = [
-    "Skipping adapter TLA+ check: no tla2tools.jar configured.",
+    "Skipping box daemon TLA+ check: no tla2tools.jar configured.",
     "Set TLA2TOOLS_JAR=/absolute/path/to/tla2tools.jar or place tla2tools.jar in spec/.",
   ].join(" ");
 

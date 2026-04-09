@@ -11,7 +11,7 @@ SSH_OPTS=${SSH_OPTS:-"-o BatchMode=yes -o StrictHostKeyChecking=accept-new"}
 ZONE="${ZONE:-example.com}"
 A_RECORD="${A_RECORD:-203.0.113.10}"
 
-ssh $SSH_OPTS "${STATIC_USER}@${STATIC_HOST}" 'systemctl is-active clawfirm-adapter && systemctl is-enabled clawfirm-adapter'
+ssh $SSH_OPTS "${STATIC_USER}@${STATIC_HOST}" 'systemctl is-active clawfirm-boxd && systemctl is-enabled clawfirm-boxd'
 ssh $SSH_OPTS "${DNS_USER}@${DNS_HOST}" "/usr/local/bin/clawfirm-dns-read <<< '{\"zone\":\"${ZONE}\"}'" || true
 
 curl -fsS "${ADAPTER_BASE_URL}/health"

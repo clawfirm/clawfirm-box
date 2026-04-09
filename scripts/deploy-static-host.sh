@@ -6,7 +6,7 @@ ROOT_DIR="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 REMOTE_HOST="${REMOTE_HOST:-137.184.33.34}"
 REMOTE_USER="${REMOTE_USER:-root}"
 REMOTE_APP_DIR="${REMOTE_APP_DIR:-/opt/clawfirm-box}"
-REMOTE_SERVICE_NAME="${REMOTE_SERVICE_NAME:-clawfirm-adapter}"
+REMOTE_SERVICE_NAME="${REMOTE_SERVICE_NAME:-clawfirm-boxd}"
 REMOTE_CADDY_SNIPPET="${REMOTE_CADDY_SNIPPET:-}"
 ADAPTER_HOSTNAME="${ADAPTER_HOSTNAME:-box.example.com}"
 MANAGE_ADAPTER_CADDY_SNIPPET="${MANAGE_ADAPTER_CADDY_SNIPPET:-0}"
@@ -48,7 +48,7 @@ rsync -a \
 
 cat > "$TMP_DIR/${REMOTE_SERVICE_NAME}.service" <<UNIT
 [Unit]
-Description=Clawfirm box adapter
+Description=Clawfirm box daemon
 After=network.target
 
 [Service]

@@ -3,13 +3,13 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Self-hosted Clawfirm mini-box runtime and adapter",
+  "description": "Self-hosted Clawfirm mini-box runtime and box daemon",
   "scripts": {
     "start": "node src/server.js",
     "test": "npm run test:handlers && npm run test:tla",
     "test:handlers": "node --test",
     "test:tla": "node scripts/run-tla-check.mjs",
-    "box:render-env": "./scripts/render-adapter-env.sh",
+    "box:render-env": "./scripts/render-box-env.sh",
     "box:bootstrap": "./scripts/bootstrap.sh"
   },
   "dependencies": {

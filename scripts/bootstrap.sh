@@ -6,7 +6,7 @@ BOX_DIR="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 OUT_DIR="${CLAWFIRM_BOX_OUT_DIR:-$BOX_DIR/.generated}"
 ENV_OUT="$OUT_DIR/.env"
 SYSTEMD_OUT_DIR="$OUT_DIR/systemd"
-SYSTEMD_TEMPLATE="$BOX_DIR/systemd/clawfirm-adapter.service"
+SYSTEMD_TEMPLATE="$BOX_DIR/systemd/clawfirm-boxd.service"
 RUNTIME_DIR="${CLAWFIRM_BOX_RUNTIME_DIR:-$BOX_DIR}"
 RUNTIME_ENV_PATH="$RUNTIME_DIR/.env"
 
@@ -15,10 +15,10 @@ FIREWALL_PROFILE="${CLAWFIRM_FIREWALL_PROFILE:-public-web}"
 SWAP_STRATEGY="${CLAWFIRM_SWAP_STRATEGY:-auto}"
 
 mkdir -p "$OUT_DIR" "$SYSTEMD_OUT_DIR"
-"$SCRIPT_DIR/render-adapter-env.sh"
+"$SCRIPT_DIR/render-box-env.sh"
 
 if [[ -f "$SYSTEMD_TEMPLATE" ]]; then
-  cp "$SYSTEMD_TEMPLATE" "$SYSTEMD_OUT_DIR/clawfirm-adapter.service"
+  cp "$SYSTEMD_TEMPLATE" "$SYSTEMD_OUT_DIR/clawfirm-boxd.service"
 fi
 
 if [[ -d "$RUNTIME_DIR" ]]; then
@@ -33,7 +33,7 @@ firewall_profile=$FIREWALL_PROFILE
 swap_strategy=$SWAP_STRATEGY
 env_path=$ENV_OUT
 runtime_env_path=$RUNTIME_ENV_PATH
-generated_unit_path=$SYSTEMD_OUT_DIR/clawfirm-adapter.service
+generated_unit_path=$SYSTEMD_OUT_DIR/clawfirm-boxd.service
 
 Next steps:
 1. review the rendered runtime env
@@ -45,8 +45,8 @@ Next steps:
 EOF
 
 printf 'Generated %s\n' "$ENV_OUT"
-if [[ -f "$SYSTEMD_OUT_DIR/clawfirm-adapter.service" ]]; then
-  printf 'Generated %s\n' "$SYSTEMD_OUT_DIR/clawfirm-adapter.service"
+if [[ -f "$SYSTEMD_OUT_DIR/clawfirm-boxd.service" ]]; then
+  printf 'Generated %s\n' "$SYSTEMD_OUT_DIR/clawfirm-boxd.service"
 fi
 printf 'Generated %s\n' "$OUT_DIR/BOOTSTRAP_NOTES.txt"
 printf 'Template profile: %s\n' "$TEMPLATE_PROFILE"
