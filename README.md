@@ -111,6 +111,15 @@ CLAWFIRM_BOX_TOKEN=replace-me \
 ./scripts/render-box-env.sh
 ```
 
+Or do a one-command bootstrap directly on the fresh box:
+
+```bash
+CLAWFIRM_BOX_PUBLIC_IP=203.0.113.10 \
+CLAWFIRM_BOX_DOMAIN=example.com \
+CLAWFIRM_BOX_TOKEN=replace-me \
+./scripts/bootstrap-fresh-box.sh
+```
+
 Stage bootstrap assets:
 
 ```bash
@@ -140,6 +149,7 @@ See also:
 - `docs/fresh-box-bring-up.md`
 - `docs/box-api-contract.md`
 - `scripts/e2e-box-smoke.sh`
+- `scripts/bootstrap-fresh-box.sh`
 
 ## Runtime API
 

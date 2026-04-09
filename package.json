@@ -10,7 +10,8 @@
     "test:handlers": "node --test",
     "test:tla": "node scripts/run-tla-check.mjs",
     "box:render-env": "./scripts/render-box-env.sh",
-    "box:bootstrap": "./scripts/bootstrap.sh"
+    "box:bootstrap": "./scripts/bootstrap.sh",
+    "box:bootstrap:fresh": "./scripts/bootstrap-fresh-box.sh"
   },
   "dependencies": {
     "jszip": "^3.10.1",

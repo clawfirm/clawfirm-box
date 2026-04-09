@@ -64,6 +64,22 @@ If you only want the box daemon reachable at `box.<domain>` and do not want loca
 
 ## 1. SSH into the fresh machine and install packages
 
+If you already cloned the repo onto the fresh box and want the shortest path, you can use the one-command helper instead of following each manual step below:
+
+```bash
+CLAWFIRM_BOX_PUBLIC_IP=203.0.113.10 \
+CLAWFIRM_BOX_DOMAIN=example.com \
+CLAWFIRM_BOX_TOKEN="$BOX_TOKEN" \
+./scripts/bootstrap-fresh-box.sh
+```
+
+Optional flags:
+
+- `CLAWFIRM_BOX_INSTALL_BIND=1` to install and configure local bind helpers
+- `CLAWFIRM_BOX_CONFIGURE_CADDY=0` to skip automatic Caddy snippet setup
+
+The rest of this guide describes the same flow step by step.
+
 ```bash
 apt update && apt upgrade -y
 apt install -y curl git ca-certificates nodejs npm caddy
