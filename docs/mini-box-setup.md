@@ -2,6 +2,10 @@
 
 This guide is for a fresh VPS that should become a self-hosted Clawfirm box.
 
+For the canonical end-to-end path from fresh machine to REST-only operation, use:
+
+- `docs/fresh-box-bring-up.md`
+
 ## Goal
 
 End up with one box that can:

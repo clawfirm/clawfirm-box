@@ -91,6 +91,16 @@ curl http://127.0.0.1:8787/health
 
 ## Box bootstrap flow
 
+Canonical bring-up guide:
+
+- `docs/fresh-box-bring-up.md`
+
+This is the recommended path when starting from a fresh VPS and wanting to:
+
+- bootstrap once over SSH
+- expose the daemon at `https://box.<domain>`
+- switch to routine REST-only operation through `clawfirm-cli` or direct API calls
+
 Render a box env scaffold:
 
 ```bash
@@ -112,6 +122,8 @@ Install local DNS helper wrappers for a bind9-backed box:
 ```bash
 sudo ./scripts/install-bind-backend.sh
 ```
+
+After bootstrap, normal publish / reconcile / release operations should go through the box daemon HTTP API rather than SSH.
 
 ## Runtime API
 
