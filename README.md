@@ -120,6 +120,12 @@ CLAWFIRM_BOX_TOKEN=replace-me \
 ./scripts/bootstrap-fresh-box.sh
 ```
 
+When `CLAWFIRM_BOX_INSTALL_BIND=1` is enabled, this helper now also:
+- seeds the initial authoritative zone for `<domain>`
+- creates `A` records for `@`, `box`, `ns1`, and `ns2`
+- creates the default `www -> <domain>` alias
+- installs a clean snippet-only Caddyfile import so later reconcile calls do not double-load site configs
+
 Stage bootstrap assets:
 
 ```bash

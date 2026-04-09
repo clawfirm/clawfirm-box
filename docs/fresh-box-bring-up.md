@@ -75,8 +75,14 @@ CLAWFIRM_BOX_TOKEN="$BOX_TOKEN" \
 
 Optional flags:
 
-- `CLAWFIRM_BOX_INSTALL_BIND=1` to install and configure local bind helpers
+- `CLAWFIRM_BOX_INSTALL_BIND=1` to install bind9, install local DNS helpers, and seed the initial authoritative zone for `<domain>`
 - `CLAWFIRM_BOX_CONFIGURE_CADDY=0` to skip automatic Caddy snippet setup
+
+When both defaults are used, the helper now leaves the box in a directly usable state for the base domain:
+- `box.<domain>` reverse-proxied through Caddy
+- initial authoritative zone created for `<domain>`
+- `A` records for `@`, `box`, `ns1`, and `ns2`
+- `www -> <domain>` alias
 
 The rest of this guide describes the same flow step by step.
 
@@ -90,6 +96,11 @@ If this box will also run local authoritative DNS:
 ```bash
 apt install -y bind9 bind9-utils
 ```
+
+Important implementation note:
+- the box must not stop at "bind9 installed"
+- the initial zone and starter records must actually be written before Caddy can obtain TLS for `box.<domain>`
+- the fresh bootstrap helper now performs that initial zone seed automatically when `CLAWFIRM_BOX_INSTALL_BIND=1`
 
 ## 2. Clone the repo onto the box
 
@@ -175,7 +186,7 @@ box.example.com {
 }
 ```
 
-If your Caddyfile imports `/etc/caddy/sites-enabled/*`, write it there and reload Caddy.
+If your Caddyfile imports `/etc/caddy/sites-enabled/*.caddy`, write it there and reload Caddy.
 
 Example:
 

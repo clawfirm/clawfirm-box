@@ -11,6 +11,7 @@ BOX_TOKEN="${CLAWFIRM_BOX_TOKEN:-}"
 INSTALL_BIND="${CLAWFIRM_BOX_INSTALL_BIND:-0}"
 CONFIGURE_CADDY="${CLAWFIRM_BOX_CONFIGURE_CADDY:-1}"
 CADDY_SNIPPETS_DIR="${CLAWFIRM_BOX_CADDY_SNIPPETS_DIR:-/etc/caddy/sites-enabled}"
+CADDY_SNIPPET_GLOB="${CLAWFIRM_BOX_CADDY_SNIPPET_GLOB:-$CADDY_SNIPPETS_DIR/*.caddy}"
 CADDY_SNIPPET_PATH="${CLAWFIRM_BOX_CADDY_SNIPPET_PATH:-$CADDY_SNIPPETS_DIR/clawfirm-box.caddy}"
 SYSTEMD_UNIT_PATH="${CLAWFIRM_BOX_SYSTEMD_UNIT_PATH:-/etc/systemd/system/clawfirm-boxd.service}"
 
@@ -47,19 +48,29 @@ need_cmd() {
   command -v "$1" >/dev/null 2>&1
 }
 
-ensure_caddy_import() {
+install_caddy_base_config() {
   local caddyfile="/etc/caddy/Caddyfile"
-  local import_line="import $CADDY_SNIPPETS_DIR/*"
+  local import_line="import $CADDY_SNIPPET_GLOB"
 
   $SUDO mkdir -p "$CADDY_SNIPPETS_DIR"
-  if [[ ! -f "$caddyfile" ]]; then
-    printf '%s\n' "$import_line" | $SUDO tee "$caddyfile" >/dev/null
-    return
+  if [[ -f "$caddyfile" ]]; then
+    $SUDO cp "$caddyfile" "$caddyfile.bak.$(date +%s)"
   fi
 
-  if ! $SUDO grep -Fq "$import_line" "$caddyfile"; then
-    printf '\n%s\n' "$import_line" | $SUDO tee -a "$caddyfile" >/dev/null
-  fi
+  cat <<EOF | $SUDO tee "$caddyfile" >/dev/null
+$import_line
+EOF
+}
+
+seed_authoritative_zone() {
+  local auth_header="Authorization: Bearer $BOX_TOKEN"
+
+  curl -fsS -X POST http://127.0.0.1:8787/dns/apply-records \
+    -H "$auth_header" \
+    -H 'Content-Type: application/json' \
+    -d @- <<EOF >/dev/null
+{"zone":"$DOMAIN","requestedBy":"bootstrap-fresh-box","reason":"initial authoritative zone seed","records":[{"type":"A","name":"@","value":"$PUBLIC_IP","ttl":300},{"type":"CNAME","name":"www","value":"$DOMAIN","ttl":300},{"type":"A","name":"box","value":"$PUBLIC_IP","ttl":300},{"type":"A","name":"ns1","value":"$PUBLIC_IP","ttl":300},{"type":"A","name":"ns2","value":"$PUBLIC_IP","ttl":300}]}
+EOF
 }
 
 printf '==> Installing base packages\n'
@@ -98,7 +109,7 @@ $SUDO systemctl restart clawfirm-boxd
 
 if [[ "$CONFIGURE_CADDY" == "1" ]]; then
   printf '==> Configuring Caddy for %s\n' "$BOX_HOSTNAME"
-  ensure_caddy_import
+  install_caddy_base_config
   cat <<EOF | $SUDO tee "$CADDY_SNIPPET_PATH" >/dev/null
 $BOX_HOSTNAME {
   reverse_proxy 127.0.0.1:8787
@@ -110,6 +121,11 @@ fi
 
 printf '==> Verifying local health\n'
 curl -fsS http://127.0.0.1:8787/health >/dev/null
+
+if [[ "$INSTALL_BIND" == "1" ]]; then
+  printf '==> Seeding initial authoritative DNS zone for %s\n' "$DOMAIN"
+  seed_authoritative_zone
+fi
 
 printf '\nFresh box bootstrap complete.\n'
 printf '  box_hostname=%s\n' "$BOX_HOSTNAME"
