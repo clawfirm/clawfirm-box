@@ -137,3 +137,9 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# TLA+ local tooling and generated artifacts
+spec/tla2tools.jar
+spec/*.bin
+spec/*_TTrace_*.tla
+spec/states/

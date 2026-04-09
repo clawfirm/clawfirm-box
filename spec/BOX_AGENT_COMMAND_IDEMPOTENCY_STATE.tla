@@ -1,5 +1,5 @@
 ----------------------------- MODULE BOX_AGENT_COMMAND_IDEMPOTENCY_STATE -----------------------------
-EXTENDS Naturals, Sequences, TLC
+EXTENDS Naturals, Sequences, FiniteSets, TLC
 
 (***************************************************************************
 Box agent command idempotency model
@@ -89,6 +89,14 @@ FailRunningCommand(c) ==
   /\ lastResult' = [lastResult EXCEPT ![c] = "failed"]
   /\ UNCHANGED << commandDomain, commandRelease, domainLive, publishCount >>
 
+RecoverFailedCommand(c) ==
+  /\ commandStatus[c] = "failed"
+  /\ commandStatus' = [commandStatus EXCEPT ![c] = "new"]
+  /\ commandDomain' = [commandDomain EXCEPT ![c] = "none"]
+  /\ commandRelease' = [commandRelease EXCEPT ![c] = NoRelease]
+  /\ lastResult' = [lastResult EXCEPT ![c] = "none"]
+  /\ UNCHANGED << domainLive, publishCount >>
+
 Next ==
   \E c \in CommandIds, d \in Domains, r \in ReleaseIds :
       AcceptNewCommand(c, d)
@@ -97,6 +105,7 @@ Next ==
    \/ ReplayAgain(c)
    \/ RejectConflictingReuse(c, d, r)
    \/ FailRunningCommand(c)
+   \/ RecoverFailedCommand(c)
 
 Inv_RecordedCommandHasStableBinding ==
   \A c \in CommandIds : commandStatus[c] \in {"recorded", "replayed", "conflict"} =>

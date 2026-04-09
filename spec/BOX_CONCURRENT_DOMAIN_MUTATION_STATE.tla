@@ -44,6 +44,7 @@ Init ==
 AcquireMutation(d, a, m) ==
   /\ domainLock[d] = NoAgent
   /\ a \in Agents
+  /\ a \notin queuedAgents[d]
   /\ m \in MutationKinds
   /\ domainLock' = [domainLock EXCEPT ![d] = a]
   /\ activeMutation' = [activeMutation EXCEPT ![d] = m]
