@@ -37,14 +37,14 @@ test('getServiceHealth reports caddy state via command executor', async () => {
 
 test('getStorageHealth summarizes sites root usage', async () => {
   const root = tempRoot();
-  fs.mkdirSync(path.join(root, 'dantevr.com', 'releases', 'r1'), { recursive: true });
-  fs.writeFileSync(path.join(root, 'dantevr.com', 'releases', 'r1', 'index.html'), '<html></html>', 'utf8');
+  fs.mkdirSync(path.join(root, 'example.com', 'releases', 'r1'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'example.com', 'releases', 'r1', 'index.html'), '<html></html>', 'utf8');
 
   const result = await getStorageHealth({ sitesRoot: root });
 
   assert.equal(result.ok, true);
   assert.equal(result.storage.releaseCount, 1);
-  assert.equal(result.storage.largestDomain.domain, 'dantevr.com');
+  assert.equal(result.storage.largestDomain.domain, 'example.com');
 });
 
 test('getLogPipelineHealth reports stale/missing log warnings', async () => {

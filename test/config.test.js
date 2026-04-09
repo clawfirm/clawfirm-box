@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 
 import { getConfig } from '../src/config.js';
 
-test('getConfig accepts short all-in-one env var aliases', () => {
+test('getConfig accepts short single-box env var aliases', () => {
   const config = getConfig({
     PORT: '8788',
     CLAWFIRM_ADAPTER_TOKEN: 'mini_secret',

@@ -16,9 +16,9 @@ function testConfig(root) {
     caddyConfigPath: path.join(root, 'Caddyfile'),
     caddySitesDir: path.join(root, 'sites-enabled'),
     caddyReloadCommand: 'echo reload-caddy',
-    caddyManagedHostExclude: ['adapter.clawfirm.ai'],
+    caddyManagedHostExclude: ['box.example.com'],
     caddyHttpOnly: false,
-    noWwwHostSuffixes: ['dev.clawfirm.ai'],
+    noWwwHostSuffixes: ['dev.example.internal'],
     dnsReadCommand: '/usr/local/bin/clawfirm-dns-read',
     dnsApplyCommand: '/usr/local/bin/clawfirm-dns-apply',
     dnsDefaultARecords: ['137.184.33.34'],
@@ -29,7 +29,7 @@ function testConfig(root) {
 test('ensureCaddyImport appends sites-enabled import once', () => {
   const root = tempRoot();
   const config = testConfig(root);
-  fs.writeFileSync(config.caddyConfigPath, 'adapter.clawfirm.ai {\n  reverse_proxy 127.0.0.1:8787\n}\n', 'utf8');
+  fs.writeFileSync(config.caddyConfigPath, 'box.example.com {\n  reverse_proxy 127.0.0.1:8787\n}\n', 'utf8');
 
   const first = ensureCaddyImport(config);
   const second = ensureCaddyImport(config);
@@ -121,9 +121,9 @@ test('reconcileDomain reports pending runtime with httpReady in caddyHttpOnly mo
   };
 
   const result = await reconcileDomain(config, {
-    domain: 'wave0.com',
+    domain: 'box.example.com',
   }, {
-    dnsExecutor: async () => ({ ok: true, zone: 'wave0.com', records: [] }),
+    dnsExecutor: async () => ({ ok: true, zone: 'box.example.com', records: [] }),
     probeFn: async (url) => ({ ok: url.startsWith('http://'), status: 200 }),
   });
 
@@ -141,12 +141,12 @@ test('reconcileDomain reports pending runtime with httpReady in caddyHttpOnly mo
 test('ensureServingHost omits www alias for platform-managed dev subdomains', () => {
   const root = tempRoot();
   const config = testConfig(root);
-  const result = ensureServingHost(config, 'quiet-otter.dev.clawfirm.ai');
+  const result = ensureServingHost(config, 'quiet-otter.dev.example.internal');
 
   assert.equal(result.changed, true);
   const snippet = fs.readFileSync(result.snippetPath, 'utf8');
-  assert.match(snippet, /^quiet-otter\.dev\.clawfirm\.ai \{/);
-  assert.doesNotMatch(snippet, /www\.quiet-otter\.dev\.clawfirm\.ai/);
+  assert.match(snippet, /^quiet-otter\.dev\.example\.internal \{/);
+  assert.doesNotMatch(snippet, /www\.quiet-otter\.dev\.example\.internal/);
 });
 
 test('reconcileDomain probes only apex for platform-managed dev subdomains', async () => {
@@ -158,7 +158,7 @@ test('reconcileDomain probes only apex for platform-managed dev subdomains', asy
   const probed = [];
 
   const result = await reconcileDomain(config, {
-    domain: 'quiet-otter.dev.clawfirm.ai',
+    domain: 'quiet-otter.dev.example.internal',
     requestedBy: 'tester',
   }, {
     dnsExecutor: async (command, payload) => {
@@ -173,8 +173,8 @@ test('reconcileDomain probes only apex for platform-managed dev subdomains', asy
     },
   });
 
-  assert.deepEqual(probed, ['https://quiet-otter.dev.clawfirm.ai']);
-  assert.equal(result.probe.apex.host, 'quiet-otter.dev.clawfirm.ai');
+  assert.deepEqual(probed, ['https://quiet-otter.dev.example.internal']);
+  assert.equal(result.probe.apex.host, 'quiet-otter.dev.example.internal');
   assert.equal(result.probe.www, null);
   assert.equal(result.tlsReady, true);
   assert.equal(result.runtimeReady, true);
@@ -185,10 +185,10 @@ test('ensureServingHost skips excluded managed hosts', () => {
   const config = testConfig(root);
   const sitesDir = config.caddySitesDir;
   fs.mkdirSync(sitesDir, { recursive: true });
-  const stalePath = path.join(sitesDir, 'adapter.clawfirm.ai.caddy');
-  fs.writeFileSync(stalePath, 'adapter.clawfirm.ai {\n  reverse_proxy 127.0.0.1:8787\n}\n', 'utf8');
+  const stalePath = path.join(sitesDir, 'box.example.com.caddy');
+  fs.writeFileSync(stalePath, 'box.example.com {\n  reverse_proxy 127.0.0.1:8787\n}\n', 'utf8');
 
-  const result = ensureServingHost(config, 'adapter.clawfirm.ai');
+  const result = ensureServingHost(config, 'box.example.com');
 
   assert.equal(result.skipped, true);
   assert.equal(fs.existsSync(stalePath), false);
@@ -197,13 +197,13 @@ test('ensureServingHost skips excluded managed hosts', () => {
 test('ensureServingHost skips domains already defined in the main Caddyfile', () => {
   const root = tempRoot();
   const config = testConfig(root);
-  fs.writeFileSync(config.caddyConfigPath, 'dantevr.com, www.dantevr.com {\n  root * /srv/nameserve/sites/dantevr.com/current\n  file_server\n}\n\nimport /etc/caddy/sites-enabled/*.caddy\n', 'utf8');
+  fs.writeFileSync(config.caddyConfigPath, 'example.com, www.example.com {\n  root * /srv/clawfirm-box/sites/example.com/current\n  file_server\n}\n\nimport /etc/caddy/sites-enabled/*.caddy\n', 'utf8');
   const sitesDir = config.caddySitesDir;
   fs.mkdirSync(sitesDir, { recursive: true });
-  const stalePath = path.join(sitesDir, 'dantevr.com.caddy');
-  fs.writeFileSync(stalePath, 'dantevr.com, www.dantevr.com {\n  root * /srv/nameserve/sites/dantevr.com/current\n  file_server\n}\n', 'utf8');
+  const stalePath = path.join(sitesDir, 'example.com.caddy');
+  fs.writeFileSync(stalePath, 'example.com, www.example.com {\n  root * /srv/clawfirm-box/sites/example.com/current\n  file_server\n}\n', 'utf8');
 
-  const result = ensureServingHost(config, 'dantevr.com');
+  const result = ensureServingHost(config, 'example.com');
 
   assert.equal(result.skipped, true);
   assert.equal(fs.existsSync(stalePath), false);

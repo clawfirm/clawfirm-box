@@ -2,7 +2,7 @@
 
 `clawfirm-box` is the self-hosted mini-box runtime for Clawfirm.
 
-It is designed for a box owner and their AI agent to interact with the box directly, without requiring Firebase, Stripe, or a hosted control plane.
+It is designed for a box owner and their AI agent to interact with the box directly.
 
 ## What this repo contains
 
@@ -13,20 +13,13 @@ It is designed for a box owner and their AI agent to interact with the box direc
 - bootstrap and deployment scripts for a single-box install
 - tests and TLA+ specs for the runtime contract
 
-## What this repo does not require
-
-- Firebase Functions
-- Firebase Hosting
-- Stripe
-- a hosted dashboard
-
 ## Core model
 
 One machine can run:
 
 - the Clawfirm box adapter
 - Caddy
-- local release storage under `/srv/nameserve/sites`
+- local release storage under `/srv/clawfirm-box/sites`
 - local DNS helper commands
 - optional bind9 for authoritative DNS on the same machine
 

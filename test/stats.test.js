@@ -92,15 +92,15 @@ test('stats fall back to current release when log lines omit explicit releaseId'
 test('stats match Caddy host values with ports', async () => {
   const root = tempRoot();
   const logPath = path.join(root, 'access.log');
-  seedRelease(root, 'dantevr.com', 'r1');
-  const currentPath = path.join(root, 'dantevr.com', 'current');
-  fs.symlinkSync(path.join(root, 'dantevr.com', 'releases', 'r1'), currentPath, 'dir');
+  seedRelease(root, 'example.com', 'r1');
+  const currentPath = path.join(root, 'example.com', 'current');
+  fs.symlinkSync(path.join(root, 'example.com', 'releases', 'r1'), currentPath, 'dir');
   writeLog(logPath, [
-    { ts: '2026-04-01T00:00:00Z', request: { host: 'dantevr.com:443', uri: '/' }, status: 200, size: 123, remote_ip: '1.1.1.1' },
+    { ts: '2026-04-01T00:00:00Z', request: { host: 'example.com:443', uri: '/' }, status: 200, size: 123, remote_ip: '1.1.1.1' },
   ]);
 
   const result = await getReleaseSummary({ sitesRoot: root, accessLogPath: logPath }, {
-    domain: 'dantevr.com',
+    domain: 'example.com',
     releaseId: 'r1',
   });
 
@@ -131,16 +131,16 @@ test('stats count www alias traffic for the paired domain', async () => {
 test('stats parse numeric unix-second timestamps from Caddy json logs', async () => {
   const root = tempRoot();
   const logPath = path.join(root, 'access.log');
-  seedRelease(root, 'dantevr.com', 'r1');
-  const currentPath = path.join(root, 'dantevr.com', 'current');
-  fs.symlinkSync(path.join(root, 'dantevr.com', 'releases', 'r1'), currentPath, 'dir');
+  seedRelease(root, 'example.com', 'r1');
+  const currentPath = path.join(root, 'example.com', 'current');
+  fs.symlinkSync(path.join(root, 'example.com', 'releases', 'r1'), currentPath, 'dir');
   writeLog(logPath, [
-    { ts: 1775095885.4536376, request: { host: 'dantevr.com', uri: '/' }, status: 200, size: 34115, remote_ip: '137.184.33.34' },
-    { ts: '1775095885.5373414', request: { host: 'www.dantevr.com', uri: '/' }, status: 200, size: 34115, remote_ip: '137.184.33.34' },
+    { ts: 1775095885.4536376, request: { host: 'example.com', uri: '/' }, status: 200, size: 34115, remote_ip: '137.184.33.34' },
+    { ts: '1775095885.5373414', request: { host: 'www.example.com', uri: '/' }, status: 200, size: 34115, remote_ip: '137.184.33.34' },
   ]);
 
   const result = await getReleaseSummary({ sitesRoot: root, accessLogPath: logPath }, {
-    domain: 'dantevr.com',
+    domain: 'example.com',
     releaseId: 'r1',
   });
 

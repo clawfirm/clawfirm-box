@@ -24,7 +24,7 @@ test('createDnsExecutor uses ssh mode by default', async () => {
   assert.equal(calls[0].args.at(-1), '/usr/local/bin/clawfirm-dns-read');
 });
 
-test('createDnsExecutor uses local bash execution in all-in-one mode', async () => {
+test('createDnsExecutor uses local bash execution in single-box mode', async () => {
   const calls = [];
   const executor = createDnsExecutor({
     dnsMode: 'local',

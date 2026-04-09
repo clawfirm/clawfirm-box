@@ -20,9 +20,9 @@ test('planZoneReplace normalizes records', () => {
 });
 
 test('planEnsureZone creates ensure intent', () => {
-  const plan = planEnsureZone({ zone: 'join.clawfirm.ai' });
+  const plan = planEnsureZone({ zone: 'join.example.com' });
   assert.deepEqual(plan, {
-    zone: 'join.clawfirm.ai',
+    zone: 'join.example.com',
     mode: 'ensure',
     requestedBy: 'functions-adapter',
     reason: 'ensure zone',

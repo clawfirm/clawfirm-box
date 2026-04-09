@@ -38,7 +38,7 @@ generated_unit_path=$SYSTEMD_OUT_DIR/clawfirm-adapter.service
 Next steps:
 1. review the rendered runtime env
 2. install dns helper scripts
-3. install bind backend / nameserver setup if using local DNS
+3. install bind backend / DNS setup if using local DNS
 4. install or update systemd units
 5. point your agent or clawfirm-cli at the box base URL
 6. validate with /health and a publish/reconcile smoke flow

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-TARGET="${1:-wave0.com}"
-ROOT_DOMAIN="${2:-wave0.com}"
-SUBDOMAIN="${3:-hello.wave0.com}"
+TARGET="${1:-box.example.com}"
+ROOT_DOMAIN="${2:-box.example.com}"
+SUBDOMAIN="${3:-hello.box.example.com}"
 CLI_BIN="${CLAWFIRM_BIN:-${HOME}/.local/bin/clawfirm}"
 TMP_ROOT="$(mktemp -d)"
 trap 'rm -rf "$TMP_ROOT"' EXIT

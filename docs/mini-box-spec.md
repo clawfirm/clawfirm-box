@@ -14,9 +14,9 @@ The box owns:
 
 The box does not require:
 
-- Firebase
-- Stripe
-- hosted SaaS control plane flows
+- cloud control-plane services
+- billing integration
+- multi-tenant hosted workflows
 
 ## Primary interface
 

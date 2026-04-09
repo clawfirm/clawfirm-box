@@ -90,7 +90,7 @@ test('publish requires auth and returns a staged release for zip payload', async
   assert.match(payload.releasePath, /example\.com\/releases\//);
 });
 
-test('adapter also accepts x-api-key auth for all-in-one compatibility', async (t) => {
+test('adapter also accepts x-api-key auth for single-box compatibility', async (t) => {
   const { server, baseUrl } = await start();
   t.after(() => server.close());
 

@@ -6,7 +6,7 @@ Single-box mode:
 
 - one host runs the box adapter service
 - the same host can run Caddy
-- the same host can store releases under `/srv/nameserve/sites`
+- the same host can store releases under `/srv/clawfirm-box/sites`
 - the same host can optionally run bind9 and local DNS helper wrappers
 
 Split mode is still possible:

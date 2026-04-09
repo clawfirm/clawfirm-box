@@ -52,8 +52,8 @@ test('ensureZone preserves existing non-NS records and backfills missing www rec
         ok: true,
         exists: true,
         records: [
-          { type: 'NS', name: '@', value: 'ns1.clawfirm.ai', ttl: 300 },
-          { type: 'NS', name: '@', value: 'ns2.clawfirm.ai', ttl: 300 },
+          { type: 'NS', name: '@', value: 'ns1.example.com', ttl: 300 },
+          { type: 'NS', name: '@', value: 'ns2.example.com', ttl: 300 },
           { type: 'A', name: '@', value: '137.184.33.34', ttl: 300 },
           { type: 'TXT', name: '@', value: 'hello', ttl: 300 },
         ],
@@ -63,13 +63,13 @@ test('ensureZone preserves existing non-NS records and backfills missing www rec
     return { ok: true, mode: payload.mode, records: payload.records, zone: payload.zone };
   };
 
-  await ensureZone(config, { requestedBy: 'tester', zone: 'dantevr.com' }, executor);
+  await ensureZone(config, { requestedBy: 'tester', zone: 'example.com' }, executor);
 
   assert.equal(calls.length, 2);
   assert.deepEqual(calls[1].payload.records, [
-    { type: 'A', name: '@', fqdn: 'dantevr.com', value: '137.184.33.34', ttl: 300 },
-    { type: 'TXT', name: '@', fqdn: 'dantevr.com', value: 'hello', ttl: 300 },
-    { type: 'CNAME', name: 'www', fqdn: 'www.dantevr.com', value: 'dantevr.com', ttl: 300 },
+    { type: 'A', name: '@', fqdn: 'example.com', value: '137.184.33.34', ttl: 300 },
+    { type: 'TXT', name: '@', fqdn: 'example.com', value: 'hello', ttl: 300 },
+    { type: 'CNAME', name: 'www', fqdn: 'www.example.com', value: 'example.com', ttl: 300 },
   ]);
 });
 
@@ -99,10 +99,10 @@ test('ensureZone preserves an existing www record without rewriting it', async (
     return { ok: true, mode: payload.mode, records: payload.records, zone: payload.zone };
   };
 
-  await ensureZone(config, { requestedBy: 'tester', zone: 'dantevr.com' }, executor);
+  await ensureZone(config, { requestedBy: 'tester', zone: 'example.com' }, executor);
 
   assert.deepEqual(calls[1].payload.records, [
-    { type: 'A', name: '@', fqdn: 'dantevr.com', value: '137.184.33.34', ttl: 300 },
-    { type: 'CNAME', name: 'www', fqdn: 'www.dantevr.com', value: 'proxy.example.net', ttl: 300 },
+    { type: 'A', name: '@', fqdn: 'example.com', value: '137.184.33.34', ttl: 300 },
+    { type: 'CNAME', name: 'www', fqdn: 'www.example.com', value: 'proxy.example.net', ttl: 300 },
   ]);
 });
