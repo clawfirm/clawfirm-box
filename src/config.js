@@ -12,7 +12,7 @@ function parseList(value, fallback = []) {
 export function getConfig(env = process.env) {
   return {
     port: Number(env.CLAWFIRM_ADAPTER_PORT || env.PORT || 8787),
-    sharedSecret: env.CLAWFIRM_ADAPTER_SHARED_SECRET || env.CLAWFIRM_ADAPTER_TOKEN || "",
+    sharedSecret: env.CLAWFIRM_BOX_SHARED_SECRET || env.CLAWFIRM_BOX_TOKEN || env.CLAWFIRM_ADAPTER_SHARED_SECRET || env.CLAWFIRM_ADAPTER_TOKEN || "",
     sitesRoot: env.CLAWFIRM_ADAPTER_SITES_ROOT || env.CLAWFIRM_SITES_ROOT || "/srv/clawfirm-box/sites",
     dnsDefaultARecords: parseList(env.CLAWFIRM_DNS_DEFAULT_A, ["137.184.33.34"]),
     dnsDefaultAaaaRecords: parseList(env.CLAWFIRM_DNS_DEFAULT_AAAA),

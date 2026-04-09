@@ -8,9 +8,9 @@ This API is meant to be called directly by the box owner, `clawfirm-cli`, or an 
 
 Mutation endpoints require:
 
-- `Authorization: Bearer <CLAWFIRM_ADAPTER_SHARED_SECRET>`
+- `Authorization: Bearer <CLAWFIRM_BOX_SHARED_SECRET>`
 
-The runtime also accepts the shorter compatibility alias `CLAWFIRM_ADAPTER_TOKEN`.
+The runtime also accepts `CLAWFIRM_BOX_TOKEN`, plus older adapter-named aliases for compatibility.
 
 ## Health
 

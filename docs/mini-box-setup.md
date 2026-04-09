@@ -73,8 +73,8 @@ npm install
 ```bash
 CLAWFIRM_BOX_PUBLIC_IP=203.0.113.10 \
 CLAWFIRM_BOX_DOMAIN=example.com \
-CLAWFIRM_BOX_ADAPTER_HOSTNAME=box.example.com \
-CLAWFIRM_BOX_ADAPTER_TOKEN=replace-me \
+CLAWFIRM_BOX_HOSTNAME=box.example.com \
+CLAWFIRM_BOX_TOKEN=replace-me \
 ./scripts/render-box-env.sh
 ```
 

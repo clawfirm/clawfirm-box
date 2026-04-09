@@ -8,8 +8,8 @@ REMOTE_USER="${REMOTE_USER:-root}"
 REMOTE_APP_DIR="${REMOTE_APP_DIR:-/opt/clawfirm-box}"
 REMOTE_SERVICE_NAME="${REMOTE_SERVICE_NAME:-clawfirm-boxd}"
 REMOTE_CADDY_SNIPPET="${REMOTE_CADDY_SNIPPET:-}"
-ADAPTER_HOSTNAME="${ADAPTER_HOSTNAME:-box.example.com}"
-MANAGE_ADAPTER_CADDY_SNIPPET="${MANAGE_ADAPTER_CADDY_SNIPPET:-0}"
+BOX_HOSTNAME="${BOX_HOSTNAME:-box.example.com}"
+MANAGE_BOX_CADDY_SNIPPET="${MANAGE_BOX_CADDY_SNIPPET:-${MANAGE_ADAPTER_CADDY_SNIPPET:-0}}"
 SSH_IDENTITY_FILE="${SSH_IDENTITY_FILE:-$HOME/.ssh/id_ed25519}"
 DEFAULT_SSH_OPTS="-o BatchMode=yes -o StrictHostKeyChecking=accept-new"
 if [[ -z "${SSH_OPTS:-}" ]]; then
@@ -64,9 +64,9 @@ User=root
 WantedBy=multi-user.target
 UNIT
 
-if [[ "$MANAGE_ADAPTER_CADDY_SNIPPET" == "1" ]]; then
-cat > "$TMP_DIR/adapter.caddy" <<CADDY
-${ADAPTER_HOSTNAME} {
+if [[ "$MANAGE_BOX_CADDY_SNIPPET" == "1" ]]; then
+cat > "$TMP_DIR/box.caddy" <<CADDY
+${BOX_HOSTNAME} {
   reverse_proxy 127.0.0.1:8787
 }
 CADDY
@@ -74,8 +74,8 @@ fi
 
 rsync -az -e "${SSH_CMD[*]}" "$STAGE_DIR/" "${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_APP_DIR}/"
 rsync -az -e "${SSH_CMD[*]}" "$TMP_DIR/${REMOTE_SERVICE_NAME}.service" "${REMOTE_USER}@${REMOTE_HOST}:/tmp/${REMOTE_SERVICE_NAME}.service"
-if [[ "$MANAGE_ADAPTER_CADDY_SNIPPET" == "1" ]]; then
-  rsync -az -e "${SSH_CMD[*]}" "$TMP_DIR/adapter.caddy" "${REMOTE_USER}@${REMOTE_HOST}:/tmp/adapter.caddy"
+if [[ "$MANAGE_BOX_CADDY_SNIPPET" == "1" ]]; then
+  rsync -az -e "${SSH_CMD[*]}" "$TMP_DIR/box.caddy" "${REMOTE_USER}@${REMOTE_HOST}:/tmp/box.caddy"
 fi
 
 "${SSH_CMD[@]}" "${REMOTE_USER}@${REMOTE_HOST}" bash <<EOF
@@ -85,9 +85,9 @@ if [[ ! -f ${REMOTE_APP_DIR}/.env ]]; then
   ${REMOTE_SUDO} cp ${REMOTE_APP_DIR}/.env.example ${REMOTE_APP_DIR}/.env
 fi
 ${REMOTE_SUDO} mv /tmp/${REMOTE_SERVICE_NAME}.service /etc/systemd/system/${REMOTE_SERVICE_NAME}.service
-if [[ "${MANAGE_ADAPTER_CADDY_SNIPPET}" == "1" && -n "${REMOTE_CADDY_SNIPPET}" ]]; then
+if [[ "${MANAGE_BOX_CADDY_SNIPPET}" == "1" && -n "${REMOTE_CADDY_SNIPPET}" ]]; then
   ${REMOTE_SUDO} mkdir -p "$(dirname "${REMOTE_CADDY_SNIPPET}")"
-  ${REMOTE_SUDO} mv /tmp/adapter.caddy ${REMOTE_CADDY_SNIPPET}
+  ${REMOTE_SUDO} mv /tmp/box.caddy ${REMOTE_CADDY_SNIPPET}
 elif [[ -n "${REMOTE_CADDY_SNIPPET}" ]]; then
   ${REMOTE_SUDO} rm -f ${REMOTE_CADDY_SNIPPET}
 fi

@@ -24,7 +24,7 @@ Split mode is still possible:
 
 Edit `/opt/clawfirm-box/.env` and set at minimum:
 
-- `CLAWFIRM_ADAPTER_SHARED_SECRET` or `CLAWFIRM_ADAPTER_TOKEN`
+- `CLAWFIRM_BOX_SHARED_SECRET` or `CLAWFIRM_BOX_TOKEN`
 - `CLAWFIRM_DNS_MODE=local` or `ssh`
 - `CLAWFIRM_DNS_DEFAULT_A=<public-ip>`
 
@@ -39,8 +39,8 @@ If using SSH DNS mode, also set:
 After the service is live:
 
 ```bash
-ADAPTER_BASE_URL=https://box.example.com \
-ADAPTER_SECRET=replace-me \
+BOX_BASE_URL=https://box.example.com \
+BOX_SECRET=replace-me \
 ZONE=example.com \
 A_RECORD=203.0.113.10 \
 ./scripts/test-remote-install.sh
