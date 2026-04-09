@@ -4,6 +4,8 @@ HTTP API for the self-hosted Clawfirm mini-box runtime.
 
 This API is meant to be called directly by the box owner, `clawfirm-cli`, or an owner-controlled AI agent.
 
+For the narrower client contract view, see `docs/box-api-contract.md`.
+
 ## Auth
 
 Mutation endpoints require:

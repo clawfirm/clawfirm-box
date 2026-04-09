@@ -9,6 +9,10 @@ It is written for the exact workflow we want an owner or AI agent to follow:
 3. switch to normal operation through the box HTTP API or `clawfirm-cli`
 4. avoid SSH for routine publish / reconcile / release work
 
+For the narrower post-bootstrap client contract, see:
+
+- `docs/box-api-contract.md`
+
 ## Outcome
 
 At the end of this guide you should have:

@@ -138,6 +138,7 @@ clawfirm mini box.example.com releases list example.com
 See also:
 
 - `docs/fresh-box-bring-up.md`
+- `docs/box-api-contract.md`
 - `scripts/e2e-box-smoke.sh`
 
 ## Runtime API
@@ -155,6 +156,8 @@ Important endpoints:
 - `POST /dns/apply-records`
 
 See `docs/box-daemon-api.md` for the current contract.
+
+For the narrower client-facing contract between `clawfirm-cli` and the box daemon, see `docs/box-api-contract.md`.
 
 ## Tests
 
