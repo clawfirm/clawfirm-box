@@ -1,0 +1,16 @@
+[Unit]
+Description=Clawfirm box adapter
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/clawfirm-box
+EnvironmentFile=/opt/clawfirm-box/.env
+ExecStart=/usr/bin/env node src/server.js
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
