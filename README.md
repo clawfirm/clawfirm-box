@@ -125,6 +125,21 @@ sudo ./scripts/install-bind-backend.sh
 
 After bootstrap, normal publish / reconcile / release operations should go through the box daemon HTTP API rather than SSH.
 
+Typical `clawfirm-cli` shapes after bootstrap:
+
+```bash
+clawfirm mini box.example.com doctor api --json
+clawfirm mini box.example.com status --json
+clawfirm mini box.example.com reconcile example.com --json
+clawfirm mini box.example.com publish ./site --domain example.com
+clawfirm mini box.example.com releases list example.com
+```
+
+See also:
+
+- `docs/fresh-box-bring-up.md`
+- `scripts/e2e-box-smoke.sh`
+
 ## Runtime API
 
 Important endpoints:

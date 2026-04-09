@@ -233,6 +233,58 @@ Typical flows should be things like:
 
 The smoke script `scripts/e2e-box-smoke.sh` shows the intended CLI shape.
 
+Example command shapes:
+
+```bash
+clawfirm mini box.example.com doctor api --json
+clawfirm mini box.example.com status --json
+clawfirm mini box.example.com reconcile example.com --json
+clawfirm mini box.example.com publish ./site --domain example.com
+clawfirm mini box.example.com releases list example.com
+```
+
+If you want a single sanity pass after bootstrap, use:
+
+```bash
+./scripts/e2e-box-smoke.sh box.example.com example.com hello.example.com
+```
+
+That script demonstrates the intended control model:
+
+- `clawfirm-cli` talks to the box daemon over HTTPS
+- routine box operations do not require SSH
+
+## 12. Common routine API operations
+
+These examples are useful when an agent wants to talk directly to the box daemon without using `clawfirm-cli`.
+
+Reconcile a domain:
+
+```bash
+curl -X POST https://box.example.com/domains/reconcile \
+  -H "Authorization: Bearer $BOX_TOKEN" \
+  -H 'Content-Type: application/json' \
+  -d '{"domain":"example.com","requestedBy":"agent","reason":"ensure runtime is ready"}'
+```
+
+List releases:
+
+```bash
+curl -X POST https://box.example.com/releases \
+  -H "Authorization: Bearer $BOX_TOKEN" \
+  -H 'Content-Type: application/json' \
+  -d '{"domain":"example.com"}'
+```
+
+Rollback to a release:
+
+```bash
+curl -X POST https://box.example.com/rollback \
+  -H "Authorization: Bearer $BOX_TOKEN" \
+  -H 'Content-Type: application/json' \
+  -d '{"domain":"example.com","releaseId":"r123"}'
+```
+
 ## Operational note
 
 SSH is still useful for:
