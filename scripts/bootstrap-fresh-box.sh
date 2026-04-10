@@ -62,6 +62,23 @@ $import_line
 EOF
 }
 
+wait_for_local_health() {
+  local url="http://127.0.0.1:8787/health"
+  local attempts="${1:-30}"
+  local delay_seconds="${2:-1}"
+  local i
+
+  for ((i = 1; i <= attempts; i += 1)); do
+    if curl -fsS "$url" >/dev/null; then
+      return 0
+    fi
+    sleep "$delay_seconds"
+  done
+
+  echo "Timed out waiting for local health at $url" >&2
+  return 1
+}
+
 seed_authoritative_zone() {
   local auth_header="Authorization: Bearer $BOX_TOKEN"
 
@@ -119,8 +136,8 @@ EOF
   $SUDO systemctl reload caddy
 fi
 
-printf '==> Verifying local health\n'
-curl -fsS http://127.0.0.1:8787/health >/dev/null
+printf '==> Waiting for local health\n'
+wait_for_local_health 45 1
 
 if [[ "$INSTALL_BIND" == "1" ]]; then
   printf '==> Seeding initial authoritative DNS zone for %s\n' "$DOMAIN"
