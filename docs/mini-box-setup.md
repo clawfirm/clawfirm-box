@@ -64,10 +64,10 @@ If this box will run the full single-box stack, install the runtime packages too
 apt install -y nodejs npm caddy bind9 bind9-utils
 ```
 
-## Clone the repo
+## Clone the public repo
 
 ```bash
-git clone <your-clawfirm-box-repo-url> /opt/clawfirm-box
+git clone https://github.com/clawfirm/clawfirm-box /opt/clawfirm-box
 cd /opt/clawfirm-box
 npm install
 ```

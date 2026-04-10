@@ -102,10 +102,10 @@ Important implementation note:
 - the initial zone and starter records must actually be written before Caddy can obtain TLS for `box.<domain>`
 - the fresh bootstrap helper now performs that initial zone seed automatically when `CLAWFIRM_BOX_INSTALL_BIND=1`
 
-## 2. Clone the repo onto the box
+## 2. Clone the public repo onto the box
 
 ```bash
-git clone <your-clawfirm-box-repo-url> /opt/clawfirm-box
+git clone https://github.com/clawfirm/clawfirm-box /opt/clawfirm-box
 cd /opt/clawfirm-box
 npm install
 ```
