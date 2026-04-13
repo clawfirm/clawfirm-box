@@ -1,8 +1,31 @@
 # clawfirm-box
 
-`clawfirm-box` is the self-hosted mini-box runtime for Clawfirm.
+
+`clawfirm-box` is the self-hosted mini-box runtime with HTTPS hosting and Nameservers.
 
 It is designed for a box owner and their AI agent to interact with the box directly.
+
+Requirements:
+- a fresh droplet or ec2 instance with an `<ip>` with ssh access from your AI agent.
+- a fresh domain `<domain>` with apex (ns1 and ns2) set to the ip and nameservers set to `ns1/ns2.<domain>`
+- clawfirm-cli tool
+```markdown
+Install clawfirm-cli tool with "curl -fsSL https://clawfirm.ai/install.sh" and run "clawfirm --help"
+```
+
+Send the following prompt _(important! use your ip and domain!)_ to your AI agent (e.g., OpenClaw, Codex, Claude Code) to setup a new all-in-one clawfirm-box:
+```markdown
+Help me set up a new self-hosted Clawfirm box for <domain> using clawfirm-cli over SSH.
+Assume SSH key access already works as root on the DigitalOcean droplet at <ip>.
+The domain is <domain>, and its nameservers are already set to ns1.<domain> and ns2.<domain>.
+Use the default public clawfirm-box setup flow on a fresh Ubuntu droplet.
+Verify SSH, bootstrap the box, verify the box API, verify DNS delegation/authority for <domain>.
+Fix any setup issues you find, and leave it ready to publish via clawfirm-cli.
+Deploy an index.html with h1 text "Hello World!" at https://<domain>
+Do not stop at partial setup, continue until it is ready or you have a concrete blocker with evidence.
+```
+
+Check if your domain was configured successfully at `https://<domain>`
 
 ## What this repo contains
 
