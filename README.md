@@ -5,10 +5,10 @@
 
 It is designed for a box owner and their AI agent to interact with the box directly.
 
-Requirements:
-- a fresh droplet or ec2 instance with an `<ip>` with ssh access from your AI agent.
-- a fresh domain `<domain>` with apex (ns1 and ns2) set to the ip and nameservers set to `ns1/ns2.<domain>`
-- clawfirm-cli tool
+## Requirements:
+- a fresh `droplet` or `ec2 instance` with an `<ip>` with ssh access from your AI agent.
+- a fresh domain `<domain>` with apex (ns1 and ns2) set to the ip and nameservers set to `ns1/ns2.<domain>`. Namecheap requires you to register this new clawbox's `<ip>` under `Personal DNS Server`.
+- `clawfirm-cli` tool
 ```markdown
 Install clawfirm-cli tool with "curl -fsSL https://clawfirm.ai/install.sh" and run "clawfirm --help"
 ```
